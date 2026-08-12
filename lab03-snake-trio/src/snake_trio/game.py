@@ -89,13 +89,17 @@ def run_game() -> int:
     }
 
     while running:
+        # 根據分數計算關卡與當前延遲 ---
+        level = (state.score // 5) + 1
+        # 預設延遲是 130，每升一關減少 15 毫秒（速度變快）。最低延遲限制在 40 毫秒以免快到無法玩。
+        current_step_ms = max(40, STEP_MS - (level - 1) * 15)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
                     state = new_game()
-                    next_step = pygame.time.get_ticks() + STEP_MS
+                    next_step = pygame.time.get_ticks() + current_step_ms
                 elif event.key in key_directions and not state.game_over:
                     candidate = key_directions[event.key]
                     if candidate != (-state.direction[0], -state.direction[1]):
@@ -104,7 +108,7 @@ def run_game() -> int:
         now = pygame.time.get_ticks()
         if not state.game_over and now >= next_step:
             step(state)
-            next_step += STEP_MS
+            next_step += current_step_ms
 
         screen.fill((255, 253, 249))
         for x in range(0, WIDTH, CELL):
@@ -120,6 +124,9 @@ def run_game() -> int:
         if state.game_over:
             message += "  |  Game over - press R to restart"
         screen.blit(font.render(message, True, (66, 10, 21)), (12, 10))
+        # 繪製關卡文字到右上角
+        level_surface = font.render(f"Level {level}", True, (66, 10, 21))
+        screen.blit(level_surface, level_surface.get_rect(topright=(WIDTH - 12, 10)))
         pygame.display.flip()
         clock.tick(60)
 
