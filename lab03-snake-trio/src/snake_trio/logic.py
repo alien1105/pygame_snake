@@ -43,7 +43,8 @@ def hit_wall(head: Cell, width: int, height: int, cell_size: int) -> bool:
     The head is aligned to the grid, so its top-left coordinate is enough.
     """
     # TODO 3: check left, right, top, and bottom boundaries.
-    raise NotImplementedError("TODO 3: check four wall boundaries")
+    x, y = head
+    return (x < 0) or (x >= width) or (y < 0) or (y >= height)
 
 
 def advance_body(body: list[Cell], new_head: Cell, grow: bool) -> list[Cell]:
