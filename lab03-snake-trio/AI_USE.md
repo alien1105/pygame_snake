@@ -86,5 +86,38 @@ direction[0] 與 direction[1] 代表 X 與 Y 軸的移動方向（例如 (-1, 0)
     else:
         # 單純移動：新蛇頭 + 除了最後一節以外的舊身體（長度不變）
         return [new_head] + body[:-1]|
+|2026/08/12/17:55|林承緯|可以把food的生成位置變成隨機的嗎|可以的！雖然任務說明有提到，在「核心任務」期間學生不需要修改 game.py 這個檔案，但如果你想要挑戰進階功能，讓遊戲變得更像真實的貪吃蛇，修改這個檔案是完全沒問題的！  目前 game.py 裡面的 choose_food 函式是為了讓每次遊戲測試的結果都一模一樣（可重複遊玩），所以它會固定從左上角開始找，把食物生成在「第一個找到的空位」上。  要讓它變成隨機生成，我們需要修改 game.py。你可以照著以下步驟做：1. 引入 random 模組打開 game.py，在檔案最上方的 import 區塊（大約第 10 行附近），加入 random 模組：Pythonimport argparse
+import random  # 新增這行來產生隨機數
+from dataclasses import dataclass
+2. 修改 choose_food 函式找到 game.py 裡面的 choose_food 函式。原本的寫法是用迴圈找到第一個空位就直接回傳，我們將它改成「找出所有空位，然後隨機挑選一個」。  請將原本的 choose_food 替換成以下程式碼：Pythondef choose_food(body: list[Cell]) -> Cell:
+    """隨機選擇一個不在蛇身上的空格來生成食物。"""
+    # 收集畫面上所有不在蛇身上的合法座標
+    free_cells = []
+    for y in range(0, HEIGHT, CELL):
+        for x in range(0, WIDTH, CELL):
+            if (x, y) not in body:
+                free_cells.append((x, y))
+    
+    # 如果沒有空位了，代表蛇已經佔滿整個畫面（遊戲破關）
+    if not free_cells:
+        raise RuntimeError("board is full")
+        
+    # 從所有空位中隨機挑選一個回傳
+    return random.choice(free_cells)
+這樣修改之後，你再去執行遊戲，食物就會完全隨機地出現在地圖上的各個角落，而且依然不會生成在蛇的身體上！|修改def choose_food()成def choose_food(body: list[Cell]) -> Cell:
+    """隨機選擇一個不在蛇身上的空格來生成食物。"""
+    # 收集畫面上所有不在蛇身上的合法座標
+    free_cells = []
+    for y in range(0, HEIGHT, CELL):
+        for x in range(0, WIDTH, CELL):
+            if (x, y) not in body:
+                free_cells.append((x, y))
+    
+    # 如果沒有空位了，代表蛇已經佔滿整個畫面（遊戲破關）
+    if not free_cells:
+        raise RuntimeError("board is full")
+        
+    # 從所有空位中隨機挑選一個回傳
+    return random.choice(free_cells)|
 
 If no AI was used, write: `No AI used.`
