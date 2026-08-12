@@ -22,8 +22,7 @@ def next_head(head: Cell, direction: Direction, cell_size: int) -> Cell:
 
     Hint: calculate x and y separately.  Do not mutate any input.
     """
-    # TODO 1: replace this line with one return statement.
-    raise NotImplementedError("TODO 1: compute the next head")
+    return (head[0] + direction[0] * cell_size, head[1] + direction[1] * cell_size)
 
 
 def ate_food(head: Cell, food: Cell) -> bool:
@@ -31,8 +30,7 @@ def ate_food(head: Cell, food: Cell) -> bool:
 
     Hint: both values use the same ``(x, y)`` tuple format.
     """
-    # TODO 2: replace this line with one boolean return statement.
-    raise NotImplementedError("TODO 2: compare head and food")
+    return head == food
 
 
 def hit_wall(head: Cell, width: int, height: int, cell_size: int) -> bool:
@@ -43,7 +41,8 @@ def hit_wall(head: Cell, width: int, height: int, cell_size: int) -> bool:
     The head is aligned to the grid, so its top-left coordinate is enough.
     """
     # TODO 3: check left, right, top, and bottom boundaries.
-    raise NotImplementedError("TODO 3: check four wall boundaries")
+    x, y = head
+    return (x < 0) or (x >= width) or (y < 0) or (y >= height)
 
 
 def advance_body(body: list[Cell], new_head: Cell, grow: bool) -> list[Cell]:
@@ -52,5 +51,9 @@ def advance_body(body: list[Cell], new_head: Cell, grow: bool) -> list[Cell]:
     The returned list always begins with ``new_head``.  When ``grow`` is True,
     keep every old segment.  Otherwise remove only the old tail.
     """
-    # TODO 4: build and return a new list.  Never call body.insert/pop/remove.
-    raise NotImplementedError("TODO 4: create the next body")
+    if grow:
+        # 吃到食物：新蛇頭 + 完整的舊身體（長度 +1）
+        return [new_head] + body
+    else:
+        # 單純移動：新蛇頭 + 除了最後一節以外的舊身體（長度不變）
+        return [new_head] + body[:-1]
