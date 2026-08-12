@@ -22,8 +22,7 @@ def next_head(head: Cell, direction: Direction, cell_size: int) -> Cell:
 
     Hint: calculate x and y separately.  Do not mutate any input.
     """
-    # TODO 1: replace this line with one return statement.
-    raise NotImplementedError("TODO 1: compute the next head")
+    return (head[0] + direction[0] * cell_size, head[1] + direction[1] * cell_size)
 
 
 def ate_food(head: Cell, food: Cell) -> bool:
@@ -42,7 +41,8 @@ def hit_wall(head: Cell, width: int, height: int, cell_size: int) -> bool:
     The head is aligned to the grid, so its top-left coordinate is enough.
     """
     # TODO 3: check left, right, top, and bottom boundaries.
-    raise NotImplementedError("TODO 3: check four wall boundaries")
+    x, y = head
+    return (x < 0) or (x >= width) or (y < 0) or (y >= height)
 
 
 def advance_body(body: list[Cell], new_head: Cell, grow: bool) -> list[Cell]:
