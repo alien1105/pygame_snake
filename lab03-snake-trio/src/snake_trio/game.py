@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass
+import random
 
 from .logic import Cell, Direction, advance_body, ate_food, hit_wall, next_head
 
@@ -20,12 +21,20 @@ START_DIRECTION: Direction = (1, 0)
 
 
 def choose_food(body: list[Cell]) -> Cell:
-    """Choose the first free cell deterministically for reproducible play."""
+    """隨機選擇一個不在蛇身上的空格來生成食物。"""
+    # 收集畫面上所有不在蛇身上的合法座標
+    free_cells = []
     for y in range(0, HEIGHT, CELL):
         for x in range(0, WIDTH, CELL):
             if (x, y) not in body:
-                return (x, y)
-    raise RuntimeError("board is full")
+                free_cells.append((x, y))
+    
+    # 如果沒有空位了，代表蛇已經佔滿整個畫面（遊戲破關）
+    if not free_cells:
+        raise RuntimeError("board is full")
+        
+    # 從所有空位中隨機挑選一個回傳
+    return random.choice(free_cells)
 
 
 @dataclass

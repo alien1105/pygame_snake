@@ -6,12 +6,12 @@ Complete this table together **before anyone edits Python**. Every member signs 
 
 | Item | Trio decision |
 |---|---|
-| Team name | |
-| Member 1 | |
-| Member 2 | |
-| Member 3 | |
+| Team name |4|
+| Member 1 |林承緯|Assign Driver|
+| Member 2 |張培驊|Navigator|
+| Member 3 |林信君|Tester/Recorder|
 | GitHub repository URL | |
-| Communication channel | |
+| Communication channel |discord|
 | Normal response time | |
 
 ## How we will work
